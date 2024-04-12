@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class AnimeAdapter : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
+class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
 
     private val animeList = mutableListOf<Anime>()
 
@@ -27,6 +27,10 @@ class AnimeAdapter : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffC
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
         val anime = animeList[position]
         holder.bind(anime)
+        // Установка слушателя кликов для элемента списка
+        holder.itemView.setOnClickListener {
+            onItemClick(anime)
+        }
     }
 
     override fun getItemCount(): Int {

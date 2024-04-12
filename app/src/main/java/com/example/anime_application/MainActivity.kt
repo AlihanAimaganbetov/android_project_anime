@@ -1,5 +1,6 @@
 package com.example.anime_application
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        adapter = AnimeAdapter()
+        adapter = AnimeAdapter { anime ->
+            // Создаем Intent для запуска новой Activity
+            val intent = Intent(this@MainActivity, AnimeDetailActivity::class.java)
+
+            // Передаем данные о выбранном аниме в новую Activity
+            intent.putExtra("anime_id", anime.id) // Предположим, что у аниме есть идентификатор
+
+            // Запускаем новую Activity
+            startActivity(intent)
+        }
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 

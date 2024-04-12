@@ -24,6 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AnimeDetailActivity"
+            android:theme="@style/Theme.AppCompat"/>
     </application>
 
 </manifest>
