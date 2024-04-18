@@ -14,10 +14,30 @@ import com.bumptech.glide.Glide
 class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
 
     private val animeList = mutableListOf<Anime>()
+    private var originalAnimeList = listOf<Anime>()
 
     fun addItems(items: List<Anime>) {
         animeList.addAll(items)
+        originalAnimeList = animeList.toList() // Обновляем оригинальный список
         notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        val filteredList = if (query.isBlank()) {
+            originalAnimeList.toList() // Вернуть оригинальный список, если запрос пустой
+        } else {
+            animeList.filter { anime ->
+                anime.title.contains(query, ignoreCase = true)
+            }
+        }
+        updateList(filteredList)
+    }
+
+    // Метод для обновления списка
+    private fun updateList(newList: List<Anime>) {
+        animeList.clear() // Очищаем текущий список
+        animeList.addAll(newList) // Добавляем отфильтрованные элементы
+        notifyDataSetChanged() // Уведомляем адаптер о изменении данных
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
@@ -28,7 +48,6 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
         val anime = animeList[position]
         holder.bind(anime)
-        // Установка слушателя кликов для элемента списка
         holder.itemView.setOnClickListener {
             onItemClick(anime)
         }
@@ -70,14 +89,13 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
                     .centerCrop()
                     .placeholder(R.drawable.image) // Заглушка, пока изображение загружается
                     .into(imageView)
+                imageView.visibility = View.VISIBLE // Показываем ImageView
             } else {
                 // Если ссылки на изображение нет, скрываем ImageView
                 imageView.visibility = View.GONE
             }
-
         }
     }
-
 }
 
 class AnimeDiffCallback : DiffUtil.ItemCallback<Anime>() {

@@ -15,6 +15,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.os.Parcel
 import android.os.Parcelable
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -61,6 +65,21 @@ class MainActivity : AppCompatActivity() {
 
         // Загружаем первую страницу данных
         loadNextPage()
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { adapter.filter(it) }
+                return true
+            }
+        })
+        return true
     }
 
     private fun loadNextPage() {

@@ -1,5 +1,7 @@
 package com.example.anime_application
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -26,7 +28,7 @@ class AnimeDetailActivity : AppCompatActivity() {
         val popularityTextView: TextView = findViewById(R.id.popularityTextView)
         val rankedTextView: TextView = findViewById(R.id.rankedTextView)
         val scoreTextView: TextView = findViewById(R.id.scoreTextView)
-//  val imageView: ImageView = findViewById(R.id.imageView)
+        val imageView: ImageView = findViewById(R.id.imageView)
         val linkTextView: TextView = findViewById(R.id.linkTextView)
 
         titleTextView.text = anime.title
@@ -39,6 +41,18 @@ class AnimeDetailActivity : AppCompatActivity() {
         rankedTextView.text = anime.ranked.toString()
         scoreTextView.text = anime.score.toString()
         linkTextView.text = anime.link
-    }
 
+        if (anime.img_url.isNotEmpty()) {
+            // Загружаем и отображаем изображение с помощью Glide
+            Glide.with(this)
+                .load(anime.img_url)
+                .centerCrop()
+                .placeholder(R.drawable.image) // Заглушка, пока изображение загружается
+                .into(imageView)
+        } else {
+            // Если ссылки на изображение нет, скрываем ImageView
+            imageView.visibility = View.GONE
+        }
+    }
 }
+
