@@ -1,4 +1,5 @@
 package com.example.anime_application
+import java.io.Serializable
 
 data class Anime(
     val id: Int,
@@ -11,6 +12,7 @@ data class Anime(
     val popularity: String,
     val ranked: Int,
     val score: Double,
-    val imageUrl: String,
+    val img_url: String,
     val link: String
-)
+) : Serializable
+

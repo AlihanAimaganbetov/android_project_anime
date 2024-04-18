@@ -1,5 +1,6 @@
 package com.example.anime_application
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,7 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
         private val popularityTextView: TextView = itemView.findViewById(R.id.popularityTextView)
         private val rankedTextView: TextView = itemView.findViewById(R.id.rankedTextView)
         private val scoreTextView: TextView = itemView.findViewById(R.id.scoreTextView)
-//        val imageView: ImageView = itemView.findViewById(R.id.imageView)
+        private val imageView: ImageView = itemView.findViewById(R.id.imageView)
         private val linkTextView: TextView = itemView.findViewById(R.id.linkTextView)
 
         fun bind(anime: Anime) {
@@ -61,6 +62,19 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
             rankedTextView.text = anime.ranked.toString()
             scoreTextView.text = anime.score.toString()
             linkTextView.text = anime.link
+
+            if (anime.img_url.isNotEmpty()) {
+                // Загружаем и отображаем изображение с помощью Glide
+                Glide.with(itemView.context)
+                    .load(anime.img_url)
+                    .centerCrop()
+                    .placeholder(R.drawable.image) // Заглушка, пока изображение загружается
+                    .into(imageView)
+            } else {
+                // Если ссылки на изображение нет, скрываем ImageView
+                imageView.visibility = View.GONE
+            }
+
         }
     }
 

@@ -1,5 +1,5 @@
 package com.example.anime_application
-
+import com.bumptech.glide.Glide
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +13,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.os.Parcel
+import android.os.Parcelable
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: AnimeAdapter
@@ -30,8 +33,8 @@ class MainActivity : AppCompatActivity() {
             // Создаем Intent для запуска новой Activity
             val intent = Intent(this@MainActivity, AnimeDetailActivity::class.java)
 
-            // Передаем данные о выбранном аниме в новую Activity
-            intent.putExtra("anime_id", anime.id) // Предположим, что у аниме есть идентификатор
+            // Передаем объект anime в новую Activity
+            intent.putExtra("anime", anime) // Предполагается, что объект Anime реализует Serializable или Parcelable
 
             // Запускаем новую Activity
             startActivity(intent)
