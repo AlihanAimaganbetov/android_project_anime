@@ -1,6 +1,7 @@
 package com.example.anime_application
 
-import android.util.Log
+
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
     private val animeList = mutableListOf<Anime>()
     private var originalAnimeList = listOf<Anime>()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addItems(items: List<Anime>) {
         animeList.addAll(items)
         originalAnimeList = animeList.toList() // Обновляем оригинальный список
@@ -34,6 +36,7 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
     }
 
     // Метод для обновления списка
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateList(newList: List<Anime>) {
         animeList.clear() // Очищаем текущий список
         animeList.addAll(newList) // Добавляем отфильтрованные элементы
