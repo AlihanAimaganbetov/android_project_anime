@@ -1,24 +1,22 @@
 package com.example.anime_application
-import com.bumptech.glide.Glide
+
+
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.anime_application.Anime
 import com.example.anime_application.AnimeAdapter
-import com.example.anime_application.AnimeApiService
-import com.example.anime_application.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import android.os.Parcel
-import android.os.Parcelable
+import com.google.gson.Gson
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.util.ArrayList
+import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.SearchView
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private var currentPage = 1
     private val PAGE_SIZE = 10
     private var totalItems = 0
-
+    private val animeList = ArrayList<Anime>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
+        loadDataFromLocalJson();
         // Добавляем слушатель прокрутки для RecyclerView
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -65,7 +63,41 @@ class MainActivity : AppCompatActivity() {
 
         // Загружаем первую страницу данных
         loadNextPage()
+
     }
+    private fun loadDataFromLocalJson() {
+        animeList.clear() // Clear any existing data before loading
+        try {
+            // Open the JSON file from assets folder (modify "anime.json" if needed)
+            val inputStreamReader = InputStreamReader(assets.open("anime.json"))
+            val bufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder = StringBuilder()
+            var line: String?
+            while (bufferedReader.readLine().also { line = it } != null) {
+                stringBuilder.append(line)
+            }
+            bufferedReader.close()
+            val jsonString = stringBuilder.toString()
+
+            // Parse JSON string using Gson (assuming your JSON structure matches Anime class)
+            val gson = Gson()
+            val animeArray = gson.fromJson(
+                jsonString,
+                Array<Anime>::class.java
+            )
+            for (anime in animeArray) {
+                animeList.add(anime)
+            }
+
+            // Update adapter with loaded data
+            adapter.notifyDataSetChanged()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            // Handle potential errors (e.g., file not found, parsing issue)
+            // You may want to display an error message to the user
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         val searchItem = menu?.findItem(R.id.action_search)
@@ -83,31 +115,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadNextPage() {
-        isLoading = true
+        if (isLoading) return // Prevent multiple simultaneous loads
 
-        // Создаем экземпляр Retrofit
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5000") // URL вашего API
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        isLoading = true // Set loading flag
 
-        val service = retrofit.create(AnimeApiService::class.java)
+        // Read data from local JSON file instead of network request
+        try {
+            val inputStream = resources.openRawResource(R.raw.anime_data)
+            val inputStreamReader = InputStreamReader(inputStream)
+            val bufferedReader = BufferedReader(inputStreamReader)
 
-        // Выполняем запрос на получение данных для текущей страницы
-        GlobalScope.launch(Dispatchers.IO) {
-            val response = service.getAnimeList().execute()
+            val stringBuilder = StringBuilder()
+            var line: String?
+            while (bufferedReader.readLine().also { line = it } != null) {
+                stringBuilder.append(line)
+            }
 
-            if (response.isSuccessful) {
-                val animeList = response.body()
-                animeList?.let { list ->
-                    // Обновляем UI на главном потоке
-                    launch(Dispatchers.Main) {
-                        adapter.addItems(list)
-                        currentPage++
-                        isLoading = false
-                    }
-                }
+            bufferedReader.close()
+
+            val jsonString = stringBuilder.toString()
+
+            // Parse JSON string using Gson (assuming your JSON structure matches Anime class)
+            val gson = Gson()
+            val animeArray = gson.fromJson(jsonString, Array<Anime>::class.java)
+
+            // Add new items to the adapter's list
+            adapter.addItems(animeArray.toList())
+
+            currentPage++ // Increment page number
+
+            // Update adapter and reset loading flag on main thread
+            runOnUiThread {
+                adapter.notifyDataSetChanged()
+                isLoading = false
+            }
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+            // Handle potential errors (e.g., file not found, parsing issue)
+            // You may want to display an error message to the user
+            runOnUiThread {
+                isLoading = false // Reset loading flag even on error
             }
         }
     }
+
 }
