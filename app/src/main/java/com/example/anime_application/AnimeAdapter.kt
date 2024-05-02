@@ -71,7 +71,7 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
         private val rankedTextView: TextView = itemView.findViewById(R.id.rankedTextView)
         private val scoreTextView: TextView = itemView.findViewById(R.id.scoreTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        private val linkTextView: TextView = itemView.findViewById(R.id.linkTextView)
+
 
         fun bind(anime: Anime) {
             titleTextView.text = anime.title
@@ -83,7 +83,7 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
             popularityTextView.text = anime.popularity
             rankedTextView.text = anime.ranked.toString()
             scoreTextView.text = anime.score.toString()
-            linkTextView.text = anime.link
+
 
             if (anime.img_url.isNotEmpty()) {
                 // Загружаем и отображаем изображение с помощью Glide

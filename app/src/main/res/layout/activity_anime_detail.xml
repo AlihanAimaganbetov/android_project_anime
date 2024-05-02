@@ -1,148 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="false">
 
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageViewAnime"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="200dp"-->
-    <!--        android:scaleType="centerCrop"-->
-    <!--        android:src="@drawable/default_anime_image" />-->
-
-    <TextView
-        android:id="@+id/titleTextView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05"
-        tools:layout_editor_absoluteX="-16dp" />
-
-    <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="414dp"
-        android:layout_height="283dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.136"
-        tools:layout_editor_absoluteX="-6dp" />
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageView"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:src="@drawable/your_image_src"-->
-    <!--        android:scaleType="centerCrop"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_marginBottom="8dp"-->
-    <!--        />-->
+        android:layout_height="wrap_content">
 
 
-    <TextView
-        android:id="@+id/genreTextView"
-        android:layout_width="157dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="4dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="351dp"
+            android:layout_height="29dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/descriptionTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/airedTextView"
-        android:layout_width="135dp"
-        android:layout_height="77dp"
-        android:layout_marginEnd="16dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.525" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="407dp"
+            android:layout_height="371dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="237dp"
-        android:layout_height="119dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.57"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="344dp"
+            android:layout_height="150dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/genreTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <TextView
-        android:id="@+id/episodesTextView"
-        android:layout_width="242dp"
-        android:layout_height="62dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.594" />
+        <TextView
+            android:id="@+id/genreTextView"
+            android:layout_width="343dp"
+            android:layout_height="53dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/airedTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
-    <TextView
-        android:id="@+id/membersTextView"
-        android:layout_width="169dp"
-        android:layout_height="35dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.61" />
+        <TextView
+            android:id="@+id/airedTextView"
+            android:layout_width="343dp"
+            android:layout_height="78dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/episodesTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/genreTextView" />
 
-    <TextView
-        android:id="@+id/popularityTextView"
-        android:layout_width="96dp"
-        android:layout_height="31dp"
-        android:layout_marginEnd="4dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71" />
+        <TextView
+            android:id="@+id/episodesTextView"
+            android:layout_width="343dp"
+            android:layout_height="62dp"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/airedTextView" />
 
-    <TextView
-        android:id="@+id/rankedTextView"
-        android:layout_width="84dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="4dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.662" />
+        <TextView
+            android:id="@+id/popularityTextView"
+            android:layout_width="343dp"
+            android:layout_height="31dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/linkTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
 
-    <TextView
-        android:id="@+id/scoreTextView"
-        android:layout_width="204dp"
-        android:layout_height="59dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.684" />
+        <TextView
+            android:id="@+id/rankedTextView"
+            android:layout_width="343dp"
+            android:layout_height="37dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/scoreTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/linkTextView"
-        android:layout_width="100dp"
-        android:layout_height="35dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.745" />
+        <TextView
+            android:id="@+id/scoreTextView"
+            android:layout_width="343dp"
+            android:layout_height="59dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/popularityTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodesTextView" />
 
-    <!-- Дополнительные поля для отображения других деталей об аниме могут быть добавлены здесь -->
+        <TextView
+            android:id="@+id/linkTextView"
+            android:layout_width="343dp"
+            android:layout_height="35dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
+

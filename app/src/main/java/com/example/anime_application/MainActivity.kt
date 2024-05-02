@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: AnimeAdapter
     private var isLoading = false
     private var currentPage = 1
-    private val PAGE_SIZE = 10
-    private var totalItems = 0
     private val animeList = ArrayList<Anime>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
