@@ -17,6 +17,7 @@ import java.util.ArrayList
 import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         loadDataFromLocalJson();
@@ -51,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                 val visibleItemCount = layoutManager.childCount
                 val totalItemCount = layoutManager.itemCount
                 val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                // Находим кнопку по ее идентификатору
 
                 // Проверяем, достигли ли мы конца списка и не загружаем ли уже данные
                 if (!isLoading && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
@@ -58,7 +62,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+        val sortButton: Button = findViewById(R.id.action_sort)
 
+        // Устанавливаем обработчик нажатия на кнопку
+        sortButton.setOnClickListener {
+            // Вызываем метод сортировки в адаптере
+            adapter.sortByScore()
+        }
         // Загружаем первую страницу данных
         loadNextPage()
 
@@ -83,16 +93,27 @@ class MainActivity : AppCompatActivity() {
                 jsonString,
                 Array<Anime>::class.java
             )
-            for (anime in animeArray) {
-                animeList.add(anime)
-            }
 
-            // Update adapter with loaded data
+            // Sort anime list by score
+            animeList.addAll(animeArray)
+
+
+            // Update adapter with sorted data
             adapter.notifyDataSetChanged()
         } catch (e: IOException) {
             e.printStackTrace()
             // Handle potential errors (e.g., file not found, parsing issue)
             // You may want to display an error message to the user
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_sort -> {
+                adapter.sortByScore()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 
@@ -142,6 +163,9 @@ class MainActivity : AppCompatActivity() {
 
             currentPage++ // Increment page number
 
+            // Sort the adapter list by score
+
+
             // Update adapter and reset loading flag on main thread
             runOnUiThread {
                 adapter.notifyDataSetChanged()
@@ -157,5 +181,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }

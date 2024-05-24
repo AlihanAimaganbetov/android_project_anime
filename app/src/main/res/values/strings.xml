@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">anime_application</string>
+    <string name="sort_by_score">Sort by Score</string>
+    <string name="search">Search</string>
 </resources>

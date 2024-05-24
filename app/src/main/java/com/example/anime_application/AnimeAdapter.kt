@@ -42,6 +42,11 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
         animeList.addAll(newList) // Добавляем отфильтрованные элементы
         notifyDataSetChanged() // Уведомляем адаптер о изменении данных
     }
+    fun sortByScore() {
+        animeList.sortWith(Comparator { anime1, anime2 -> anime2.score.compareTo(anime1.score) })
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_anime, parent, false)
