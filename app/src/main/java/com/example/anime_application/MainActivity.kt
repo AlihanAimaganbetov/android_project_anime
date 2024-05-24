@@ -3,6 +3,7 @@ package com.example.anime_application
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,9 @@ import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageButton
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,22 +29,28 @@ class MainActivity : AppCompatActivity() {
     private var isLoading = false
     private var currentPage = 1
     private val animeList = ArrayList<Anime>()
+    private val favoriteAnimeList = mutableListOf<Anime>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        adapter = AnimeAdapter { anime ->
-            // Создаем Intent для запуска новой Activity
+        adapter = AnimeAdapter(onItemClick = { anime ->
             val intent = Intent(this@MainActivity, AnimeDetailActivity::class.java)
-
-            // Передаем объект anime в новую Activity
-            intent.putExtra("anime", anime) // Предполагается, что объект Anime реализует Serializable или Parcelable
-
-            // Запускаем новую Activity
+            intent.putExtra("anime", anime)
             startActivity(intent)
-        }
-
+            Log.d("favorite", favoriteAnimeList.toString())
+            Log.d("isfavorite", anime.isFavorite.toString())
+        }, onFavoriteClick = { anime ->
+            if (anime.isFavorite) {
+                favoriteAnimeList.add(anime)
+                Log.d("favorite5", favoriteAnimeList.toString())
+                adapter.addToFavorites(anime)
+            } else {
+                Log.d("favorite6", favoriteAnimeList.toString())
+                favoriteAnimeList.remove(anime)
+                adapter.removeFromFavorites(anime)
+            }
+        })
 
 
         recyclerView.adapter = adapter
@@ -69,10 +79,19 @@ class MainActivity : AppCompatActivity() {
             // Вызываем метод сортировки в адаптере
             adapter.sortByScore()
         }
+
+        val favoriteButton: Button = findViewById(R.id.FavoriteButton)
+        favoriteButton.setOnClickListener {
+            val intent = Intent(this, FavoriteActivity::class.java)
+            intent.putExtra("favoriteAnimeList", favoriteAnimeList.toTypedArray())
+            startActivity(intent)
+            Log.d("favoriteафсывфа", favoriteAnimeList.toString())
+        }
         // Загружаем первую страницу данных
         loadNextPage()
 
     }
+
     private fun loadDataFromLocalJson() {
         animeList.clear() // Clear any existing data before loading
         try {
@@ -113,6 +132,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.sortByScore()
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -125,6 +145,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let { adapter.filter(it) }
                 return true

@@ -2,9 +2,12 @@ package com.example.anime_application
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -12,11 +15,33 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
+class AnimeAdapter(
+    private val onItemClick: (Anime) -> Unit,
+    private val onFavoriteClick: (Anime) -> Unit
+) : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
 
     private val animeList = mutableListOf<Anime>()
     private var originalAnimeList = listOf<Anime>()
+    private val favoriteAnimeList = mutableListOf<Anime>()
 
+
+    fun addToFavorites(anime: Anime) {
+        if (anime.isFavorite) {
+
+            anime.isFavorite = true
+            favoriteAnimeList.add(anime)
+            notifyItemChanged(animeList.indexOf(anime))
+        }
+    }
+
+    fun removeFromFavorites(anime: Anime) {
+        if (!anime.isFavorite) {
+            anime.isFavorite = false
+
+            favoriteAnimeList.remove(anime)
+            notifyItemChanged(animeList.indexOf(anime))
+        }
+    }
     @SuppressLint("NotifyDataSetChanged")
     fun addItems(items: List<Anime>) {
         animeList.addAll(items)
@@ -42,6 +67,7 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
         animeList.addAll(newList) // Добавляем отфильтрованные элементы
         notifyDataSetChanged() // Уведомляем адаптер о изменении данных
     }
+
     fun sortByScore() {
         animeList.sortWith(Comparator { anime1, anime2 -> anime2.score.compareTo(anime1.score) })
         notifyDataSetChanged()
@@ -58,6 +84,11 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
         holder.bind(anime)
         holder.itemView.setOnClickListener {
             onItemClick(anime)
+        }
+        holder.favoriteButton.setOnClickListener {
+            anime.isFavorite = !anime.isFavorite
+            onFavoriteClick(anime)
+            notifyItemChanged(position)
         }
     }
 
@@ -76,7 +107,7 @@ class AnimeAdapter(private val onItemClick: (Anime) -> Unit) : ListAdapter<Anime
         private val rankedTextView: TextView = itemView.findViewById(R.id.rankedTextView)
         private val scoreTextView: TextView = itemView.findViewById(R.id.scoreTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
-
+        val favoriteButton: Button = itemView.findViewById(R.id.favoriteButton) // Add this line
 
         fun bind(anime: Anime) {
             titleTextView.text = anime.title

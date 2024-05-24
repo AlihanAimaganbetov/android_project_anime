@@ -13,6 +13,7 @@ data class Anime(
     val ranked: Int,
     val score: Double,
     val img_url: String,
-    val link: String
+    val link: String,
+    var isFavorite: Boolean = false
 ) : Serializable
 
