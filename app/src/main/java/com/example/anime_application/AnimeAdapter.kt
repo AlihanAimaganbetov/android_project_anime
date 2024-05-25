@@ -88,6 +88,7 @@ class AnimeAdapter(
         holder.favoriteButton.setOnClickListener {
             anime.isFavorite = !anime.isFavorite
             onFavoriteClick(anime)
+            holder.favoriteButton.text = if (!anime.isFavorite) "Remove from Favorites" else "Add to Favorites"
             notifyItemChanged(position)
         }
     }
@@ -108,6 +109,28 @@ class AnimeAdapter(
         private val scoreTextView: TextView = itemView.findViewById(R.id.scoreTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
         val favoriteButton: Button = itemView.findViewById(R.id.favoriteButton) // Add this line
+        fun bindFromFavoriteList(anime: Anime) {
+            titleTextView.text = "Title: ${anime.title}"
+            synopsisTextView.text = "Synopsis: ${anime.synopsis}"
+            genreTextView.text = "Genre: ${anime.genre}"
+            airedTextView.text = "Aired: ${anime.aired}"
+            episodesTextView.text = "Episodes: ${anime.episodes}"
+            membersTextView.text = "Members: ${anime.members}"
+            popularityTextView.text = "Popularity: ${anime.popularity}"
+            rankedTextView.text = "Ranked: ${anime.ranked}"
+            scoreTextView.text = "Score: ${anime.score}"
+
+            if (anime.img_url.isNotEmpty()) {
+                Glide.with(itemView.context)
+                    .load(anime.img_url)
+                    .centerCrop()
+                    .placeholder(R.drawable.image)
+                    .into(imageView)
+                imageView.visibility = View.VISIBLE
+            } else {
+                imageView.visibility = View.GONE
+            }
+        }
 
         fun bind(anime: Anime) {
             titleTextView.text = anime.title

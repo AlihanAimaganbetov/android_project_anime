@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity() {
         }, onFavoriteClick = { anime ->
             if (anime.isFavorite) {
                 favoriteAnimeList.add(anime)
-                Log.d("favorite5", favoriteAnimeList.toString())
-                adapter.addToFavorites(anime)
+                Log.d("favoriteadd", favoriteAnimeList.toString())
+
             } else {
-                Log.d("favorite6", favoriteAnimeList.toString())
+                Log.d("favoriteremove", favoriteAnimeList.toString())
                 favoriteAnimeList.remove(anime)
-                adapter.removeFromFavorites(anime)
+
             }
         })
 
@@ -83,9 +83,10 @@ class MainActivity : AppCompatActivity() {
         val favoriteButton: Button = findViewById(R.id.FavoriteButton)
         favoriteButton.setOnClickListener {
             val intent = Intent(this, FavoriteActivity::class.java)
-            intent.putExtra("favoriteAnimeList", favoriteAnimeList.toTypedArray())
+            intent.putExtra("favoriteAnimeList", ArrayList(favoriteAnimeList)) // Ensure it's an ArrayList
             startActivity(intent)
-            Log.d("favoriteафсывфа", favoriteAnimeList.toString())
+
+
         }
         // Загружаем первую страницу данных
         loadNextPage()
